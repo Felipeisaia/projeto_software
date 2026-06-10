@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental MVP - Dashboard</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-tooth sidebar-icon"></i>
+                <h2>Dental MVP</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><i class="fas fa-chart-bar"></i><span>Dashboard</span></a>
+                <a href="index.html" class="nav-item"><i class="fas fa-users"></i><span>Pacientes</span></a>
+                <a href="#" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Agendamentos</span></a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Dashboard</h1>
+                    <p>Visão geral da sua clínica e finanças</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-avatar">F</div>
+                </div>
+            </div>
+
+            <div class="view-switcher">
+                <button id="showClinicalBtn" class="active">
+                    <i class="fas fa-tooth"></i> Visão Clínica
+                </button>
+                <button id="showFinancialBtn">
+                    <i class="fas fa-dollar-sign"></i> Visão Financeira
+                </button>
+            </div>
+
+            <div id="clinicalView">
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-content">
+                            <h3 id="totalPatients">-</h3>
+                            <p>Total de Pacientes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                        <div class="stat-content">
+                            <h3 id="todayAppointments">-</h3>
+                            <p>Consultas Hoje</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-content">
+                            <h3 id="nextAppointment">-</h3>
+                            <p>Próxima Consulta</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Consultas de Hoje</h3>
+                        <button class="btn-refresh" id="refreshTodayBtn"><i class="fas fa-sync-alt"></i> Atualizar</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="appointments-table">
+                            <thead>
+                                <tr>
+                                    <th>Horário</th>
+                                    <th>Paciente</th>
+                                    <th>Tratamento</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="todayAppointmentsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Histórico de Consultas</h3>
+                        <div class="filter-controls">
+                            <select id="periodFilter">
+                                <option value="all">Todos</option>
+                                <option value="week">Última semana</option>
+                                <option value="month">Último mês</option>
+                            </select>
+                            <button class="btn-primary" id="applyFilterBtn"><i class="fas fa-filter"></i> Filtrar</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="appointments-table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Horário</th>
+                                    <th>Paciente</th>
+                                    <th>Tratamento</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyAppointmentsList"></tbody>
+                        </table>
+                        <div id="historyPaginationControls" class="pagination"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="financialView" class="hidden">
+                <div class="section-header" style="margin-bottom: 1.5rem;">
+                    <h3>Resumo Financeiro</h3>
+                    <div class="filter-controls">
+                        <select id="financialPeriodFilter">
+                            <option value="day">Hoje</option>
+                            <option value="week">Esta Semana</option>
+                            <option value="month" selected>Este Mês</option>
+                            <option value="year">Este Ano</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-icon income"><i class="fas fa-arrow-up"></i></div>
+                        <div class="stat-content">
+                            <h3 id="totalRevenue">R$ -</h3>
+                            <p>Faturamento Total</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon expense"><i class="fas fa-arrow-down"></i></div>
+                        <div class="stat-content">
+                            <h3 id="totalExpenses">R$ -</h3>
+                            <p>Despesas Totais</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon profit"><i class="fas fa-balance-scale"></i></div>
+                        <div class="stat-content">
+                            <h3 id="netProfit">R$ -</h3>
+                            <p>Lucro Líquido</p>
+                        </div>
+                    </div>
+                     <div class="stat-card">
+                        <div class="stat-icon sales"><i class="fas fa-tags"></i></div>
+                        <div class="stat-content">
+                            <h3 id="salesCount">-</h3>
+                            <p>Nº de Vendas/Entradas</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="financial-grid">
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h3>Top 5 Procedimentos Realizados</h3>
+                        </div>
+                        <ul id="topProceduresList" class="info-list">
+                            <li>Carregando...</li>
+                        </ul>
+                    </div>
+                    <div class="content-section">
+                        <div class="section-header">
+                           <h3>Faturamento vs. Despesas (Anual)</h3>
+                        </div>
+                        <canvas id="financialChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="appointmentModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Detalhes da Consulta</h3>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div id="appointmentDetail" class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard-script.js"></script>
+</body>
+</html>

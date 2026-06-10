@@ -1,29 +1,23 @@
-<\!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Categoria</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Cadastro Categoria</title>
 </head>
-<body class="container mt-4">
+<body>
 
-<h1 class="mb-4">Cadastro de Categoria</h1>
+<h1>Cadastro de Categoria</h1>
 
 <form th:action="@{/categoria/salvar}" th:object="${categoria}" method="post">
     <input type="hidden" th:field="*{id}">
 
-    <div class="mb-3">
-        <label class="form-label">Nome</label>
-        <input type="text" class="form-control" th:field="*{nome}" required>
-    </div>
+    <label>Nome:</label><br>
+    <input type="text" th:field="*{nome}" required><br><br>
 
-    <input type="reset" class="btn btn-secondary" value="Limpar">
-    <input type="submit" class="btn btn-primary" value="Salvar">
+    <button type="submit">Salvar</button>
 </form>
 
-<br>
-<a class="btn btn-outline-secondary" href="/categoria/listar">Ver Categorias</a>
-<a class="btn btn-outline-secondary" href="/">Voltar</a>
+<a href="/categoria/listar">Voltar</a>
 
 </body>
 </html>

@@ -6,12 +6,7 @@ import com.example.crud.repository.ProdutoRepository;
 import com.example.crud.service.ProdutoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/produto")
@@ -21,7 +16,8 @@ public class ProdutoController {
     private final ProdutoService produtoService;
     private final CategoriaRepository categoriaRepository;
 
-    public ProdutoController(ProdutoRepository produtoRepository, ProdutoService produtoService,
+    public ProdutoController(ProdutoRepository produtoRepository,
+                             ProdutoService produtoService,
                              CategoriaRepository categoriaRepository) {
         this.produtoRepository = produtoRepository;
         this.produtoService = produtoService;
@@ -43,8 +39,7 @@ public class ProdutoController {
 
     @GetMapping("/listar")
     public String listarProdutos(Model model) {
-        List<Produto> produtos = produtoRepository.findAll();
-        model.addAttribute("produtos", produtos);
+        model.addAttribute("produtos", produtoRepository.findAll());
         return "lista";
     }
 
@@ -56,8 +51,7 @@ public class ProdutoController {
 
     @GetMapping("/editar/{id}")
     public String editarProduto(@PathVariable Integer id, Model model) {
-        Produto produto = produtoRepository.findById(id).orElse(null);
-        model.addAttribute("produto", produto);
+        model.addAttribute("produto", produtoRepository.findById(id).orElseThrow());
         model.addAttribute("categorias", categoriaRepository.findAll());
         return "formulario";
     }

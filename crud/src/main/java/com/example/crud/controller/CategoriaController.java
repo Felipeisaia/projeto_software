@@ -1,26 +1,26 @@
 package com.example.crud.controller;
 
 import com.example.crud.model.Categoria;
+import com.example.crud.repository.CategoriaRepository;
 import com.example.crud.service.CategoriaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/categoria")
 public class CategoriaController {
 
+    private final CategoriaRepository categoriaRepository;
     private final CategoriaService categoriaService;
 
-    public CategoriaController(CategoriaService categoriaService) {
+    public CategoriaController(CategoriaRepository categoriaRepository, CategoriaService categoriaService) {
+        this.categoriaRepository = categoriaRepository;
         this.categoriaService = categoriaService;
     }
 
     @GetMapping("/formulario")
-    public String exibirFormulario(Model model) {
+    public String formulario(Model model) {
         model.addAttribute("categoria", new Categoria());
         return "categoria-formulario";
     }
@@ -33,19 +33,19 @@ public class CategoriaController {
 
     @GetMapping("/listar")
     public String listar(Model model) {
-        model.addAttribute("categorias", categoriaService.listar());
+        model.addAttribute("categorias", categoriaRepository.findAll());
         return "categoria-lista";
     }
 
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
-        model.addAttribute("categoria", categoriaService.buscarPorId(id));
+        model.addAttribute("categoria", categoriaRepository.findById(id).orElseThrow());
         return "categoria-formulario";
     }
 
     @GetMapping("/deletar/{id}")
     public String deletar(@PathVariable Integer id) {
-        categoriaService.deletar(id);
+        categoriaRepository.deleteById(id);
         return "redirect:/categoria/listar";
     }
 }

@@ -4,8 +4,6 @@ import com.example.crud.model.Categoria;
 import com.example.crud.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class CategoriaService {
 
@@ -16,18 +14,10 @@ public class CategoriaService {
     }
 
     public void salvar(Categoria categoria) {
+        if(categoria.getNome() == null || categoria.getNome().isBlank()) {
+            throw new RuntimeException("Nome da categoria é obrigatório");
+        }
+
         categoriaRepository.save(categoria);
-    }
-
-    public List<Categoria> listar() {
-        return categoriaRepository.findAll();
-    }
-
-    public Categoria buscarPorId(Integer id) {
-        return categoriaRepository.findById(id).orElse(null);
-    }
-
-    public void deletar(Integer id) {
-        categoriaRepository.deleteById(id);
     }
 }

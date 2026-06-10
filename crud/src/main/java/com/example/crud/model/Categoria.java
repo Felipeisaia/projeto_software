@@ -1,30 +1,29 @@
 package com.example.crud.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String nome;
 
-    public Categoria() {}
+    public Categoria() {
+    }
 
-    public Categoria(String nome) {
+    public Categoria(Integer id, String nome) {
+        this.id = id;
         this.nome = nome;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
